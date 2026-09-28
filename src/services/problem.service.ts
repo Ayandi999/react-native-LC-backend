@@ -1,35 +1,54 @@
-import { eq, or } from "drizzle-orm";
+import { eq, or, asc } from "drizzle-orm";
 import { db } from "../db/db.js";
 import { problems } from "../db/schema.js";
 import { NotFoundError } from "../utils/errors.js";
 
 export class ProblemService {
   /**
-   * Fetch all available LeetCode problems
+   * Fetch all available LeetCode problems ordered by frontend question ID
    */
   async getAllProblems() {
     const list = await db
       .select({
         id: problems.id,
-        slug: problems.slug,
+        questionId: problems.questionId,
+        frontendQuestionId: problems.frontendQuestionId,
         title: problems.title,
+        titleSlug: problems.titleSlug,
         difficulty: problems.difficulty,
-        category: problems.category,
-        defaultTimeLimitSeconds: problems.defaultTimeLimitSeconds,
+        difficultyLevel: problems.difficultyLevel,
+        paidOnly: problems.paidOnly,
+        totalAcs: problems.totalAcs,
+        totalSubmitted: problems.totalSubmitted,
+        acceptanceRate: problems.acceptanceRate,
       })
-      .from(problems);
+      .from(problems)
+      .orderBy(asc(problems.frontendQuestionId));
 
     return list;
   }
 
   /**
-   * Fetch problem by ID or slug
+   * Fetch problem by UUID id, titleSlug, or numeric question/frontend ID
    */
   async getProblemByIdOrSlug(idOrSlug: string) {
+    const isNumeric = /^\d+$/.test(idOrSlug);
+    const numericId = isNumeric ? parseInt(idOrSlug, 10) : null;
+
+    const conditions = [
+      eq(problems.id, idOrSlug),
+      eq(problems.titleSlug, idOrSlug.toLowerCase()),
+    ];
+
+    if (numericId !== null) {
+      conditions.push(eq(problems.frontendQuestionId, numericId));
+      conditions.push(eq(problems.questionId, numericId));
+    }
+
     const [problem] = await db
       .select()
       .from(problems)
-      .where(or(eq(problems.id, idOrSlug), eq(problems.slug, idOrSlug)))
+      .where(or(...conditions))
       .limit(1);
 
     if (!problem) {
@@ -41,3 +60,4 @@ export class ProblemService {
 }
 
 export const problemService = new ProblemService();
+

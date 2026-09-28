@@ -1,26 +1,26 @@
-import { pgTable, text, varchar, integer, timestamp, jsonb, index } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, boolean, timestamp, jsonb, index } from "drizzle-orm/pg-core";
 import { user } from "./auth-schema.js";
 
 // Re-export Better Auth schema
 export * from "./auth-schema.js";
 
-// 1. Problems Table (LeetCode problems)
+// 1. Problems Table (LeetCode problems from stat_status_pairs)
 export const problems = pgTable(
   "problems",
   {
     id: text("id")
       .primaryKey()
       .$defaultFn(() => crypto.randomUUID()),
-    slug: varchar("slug", { length: 255 }).notNull().unique(),
+    questionId: integer("question_id").notNull().unique(),
+    frontendQuestionId: integer("frontend_question_id").notNull(),
     title: varchar("title", { length: 255 }).notNull(),
+    titleSlug: varchar("title_slug", { length: 255 }).notNull().unique(),
     difficulty: varchar("difficulty", { length: 50 }).notNull(), // 'Easy' | 'Medium' | 'Hard'
-    category: varchar("category", { length: 100 }), // e.g. 'Arrays & Hashing', 'Two Pointers'
-    description: text("description").notNull(),
-    starterCode: jsonb("starter_code").notNull(), // { javascript: string, python: string, ... }
-    testCases: jsonb("test_cases").notNull(), // [{ input: any, expected: any, isHidden?: boolean }]
-    constraints: jsonb("constraints"), // string[]
-    hints: jsonb("hints"), // string[]
-    defaultTimeLimitSeconds: integer("default_time_limit_seconds").notNull().default(1800), // 30 mins
+    difficultyLevel: integer("difficulty_level").notNull(), // 1, 2, 3
+    paidOnly: boolean("paid_only").notNull().default(false),
+    totalAcs: integer("total_acs").default(0),
+    totalSubmitted: integer("total_submitted").default(0),
+    acceptanceRate: varchar("acceptance_rate", { length: 20 }),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
       .defaultNow()
@@ -28,7 +28,8 @@ export const problems = pgTable(
       .notNull(),
   },
   (table) => [
-    index("problems_slug_idx").on(table.slug),
+    index("problems_title_slug_idx").on(table.titleSlug),
+    index("problems_frontend_id_idx").on(table.frontendQuestionId),
     index("problems_difficulty_idx").on(table.difficulty),
   ]
 );
