@@ -1,0 +1,10 @@
+[
+  { "type": "create", "kind": "table", "entity": ["public", "interview_messages"] },
+  { "type": "create", "kind": "table", "entity": ["public", "interview_sessions"] },
+  { "type": "create", "kind": "table", "entity": ["public", "problems"] },
+  { "type": "create", "kind": "table", "entity": ["public", "user_problem_stats"] },
+  { "type": "create", "kind": "table", "entity": ["public", "account"] },
+  { "type": "create", "kind": "table", "entity": ["public", "session"] },
+  { "type": "create", "kind": "table", "entity": ["public", "user"] },
+  { "type": "create", "kind": "table", "entity": ["public", "verification"] }
+]

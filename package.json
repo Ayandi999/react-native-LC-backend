@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx src/db/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -27,7 +28,10 @@
   "packageManager": "pnpm@12.5.1",
   "type": "module",
   "dependencies": {
+    "@better-auth/drizzle-adapter": "^1.7.6",
     "@types/express": "^5.0.6",
+    "better-auth": "^1.7.6",
+    "cors": "^2.8.6",
     "dotenv": "^18.0.1",
     "drizzle-orm": "1.0.0-rc.4",
     "express": "^5.2.1",
@@ -36,6 +40,8 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@better-auth/cli": "^1.4.21",
+    "@types/cors": "^2.8.19",
     "@types/node": "^26.6.2",
     "@types/pg": "^8.23.1",
     "drizzle-kit": "1.0.0-rc.4",
