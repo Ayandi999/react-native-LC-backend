@@ -23,10 +23,16 @@ export class ProblemController {
   /**
    * Get single problem by ID or slug
    */
-  async getProblemById(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  async getProblemById(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       const validatedParams = ProblemParamSchema.parse(req.params);
-      const problem = await problemService.getProblemByIdOrSlug(validatedParams.id);
+      const problem = await problemService.getProblemByIdOrSlug(
+        validatedParams.id
+      );
 
       return res.json({
         success: true,

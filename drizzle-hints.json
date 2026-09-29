@@ -1,22 +1,17 @@
 [
-  { "type": "create", "kind": "column", "entity": ["public", "problems", "question_id"] },
-  { "type": "create", "kind": "column", "entity": ["public", "problems", "frontend_question_id"] },
-  { "type": "create", "kind": "column", "entity": ["public", "problems", "title_slug"] },
-  { "type": "create", "kind": "column", "entity": ["public", "problems", "difficulty_level"] },
-  { "type": "create", "kind": "column", "entity": ["public", "problems", "paid_only"] },
-  { "type": "create", "kind": "column", "entity": ["public", "problems", "total_acs"] },
-  { "type": "create", "kind": "column", "entity": ["public", "problems", "total_submitted"] },
-  { "type": "create", "kind": "column", "entity": ["public", "problems", "acceptance_rate"] },
-  { "type": "create", "kind": "unique", "entity": ["public", "problems", "problems_question_id_key"] },
-  { "type": "create", "kind": "unique", "entity": ["public", "problems", "problems_title_slug_key"] },
-  { "type": "create", "kind": "index", "entity": ["public", "problems", "problems_title_slug_idx"] },
-  { "type": "create", "kind": "index", "entity": ["public", "problems", "problems_frontend_id_idx"] },
-  { "type": "confirm_data_loss", "kind": "column", "entity": ["public", "problems", "slug"] },
-  { "type": "confirm_data_loss", "kind": "column", "entity": ["public", "problems", "category"] },
-  { "type": "confirm_data_loss", "kind": "column", "entity": ["public", "problems", "description"] },
-  { "type": "confirm_data_loss", "kind": "column", "entity": ["public", "problems", "starter_code"] },
-  { "type": "confirm_data_loss", "kind": "column", "entity": ["public", "problems", "test_cases"] },
-  { "type": "confirm_data_loss", "kind": "column", "entity": ["public", "problems", "constraints"] },
-  { "type": "confirm_data_loss", "kind": "column", "entity": ["public", "problems", "hints"] },
-  { "type": "confirm_data_loss", "kind": "column", "entity": ["public", "problems", "default_time_limit_seconds"] }
+  {
+    "type": "create",
+    "kind": "table",
+    "entity": ["public", "interview_sessions"]
+  },
+  { "type": "create", "kind": "table", "entity": ["public", "problems"] },
+  {
+    "type": "create",
+    "kind": "table",
+    "entity": ["public", "user_problem_stats"]
+  },
+  { "type": "create", "kind": "table", "entity": ["public", "account"] },
+  { "type": "create", "kind": "table", "entity": ["public", "session"] },
+  { "type": "create", "kind": "table", "entity": ["public", "user"] },
+  { "type": "create", "kind": "table", "entity": ["public", "verification"] }
 ]

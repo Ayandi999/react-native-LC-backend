@@ -19,8 +19,6 @@ export class ProblemService {
         difficultyLevel: problems.difficultyLevel,
         paidOnly: problems.paidOnly,
         totalAcs: problems.totalAcs,
-        totalSubmitted: problems.totalSubmitted,
-        acceptanceRate: problems.acceptanceRate,
       })
       .from(problems)
       .orderBy(asc(problems.frontendQuestionId));
@@ -60,4 +58,3 @@ export class ProblemService {
 }
 
 export const problemService = new ProblemService();
-

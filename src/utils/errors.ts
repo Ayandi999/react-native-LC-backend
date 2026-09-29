@@ -18,7 +18,10 @@ export class BadRequestError extends AppError {
 }
 
 export class UnauthorizedError extends AppError {
-  constructor(message: string = "Unauthorized. Please log in first.", details?: any) {
+  constructor(
+    message: string = "Unauthorized. Please log in first.",
+    details?: any
+  ) {
     super(message, 401, details);
   }
 }

@@ -5,7 +5,11 @@ export class AuthService {
   /**
    * Handle Google native mobile SDK ID Token verification
    */
-  async loginWithGoogleIdToken(idToken: string, accessToken: string | undefined, headers: Headers) {
+  async loginWithGoogleIdToken(
+    idToken: string,
+    accessToken: string | undefined,
+    headers: Headers
+  ) {
     try {
       const result = await auth.api.signInSocial({
         body: {
@@ -19,14 +23,19 @@ export class AuthService {
       });
       return result;
     } catch (error: any) {
-      throw new BadRequestError(error?.message || "Google token verification failed");
+      throw new BadRequestError(
+        error?.message || "Google token verification failed"
+      );
     }
   }
 
   /**
    * Generate Google OAuth redirect authorization URL
    */
-  async getGoogleAuthUrl(callbackURL: string, headers: Headers): Promise<string> {
+  async getGoogleAuthUrl(
+    callbackURL: string,
+    headers: Headers
+  ): Promise<string> {
     try {
       const result = await auth.api.signInSocial({
         body: {
@@ -41,14 +50,19 @@ export class AuthService {
       return result.url;
     } catch (error: any) {
       if (error instanceof BadRequestError) throw error;
-      throw new BadRequestError(error?.message || "Failed to initiate Google login");
+      throw new BadRequestError(
+        error?.message || "Failed to initiate Google login"
+      );
     }
   }
 
   /**
    * Generate GitHub OAuth redirect authorization URL
    */
-  async getGitHubAuthUrl(callbackURL: string, headers: Headers): Promise<string> {
+  async getGitHubAuthUrl(
+    callbackURL: string,
+    headers: Headers
+  ): Promise<string> {
     try {
       const result = await auth.api.signInSocial({
         body: {
@@ -63,7 +77,9 @@ export class AuthService {
       return result.url;
     } catch (error: any) {
       if (error instanceof BadRequestError) throw error;
-      throw new BadRequestError(error?.message || "Failed to initiate GitHub login");
+      throw new BadRequestError(
+        error?.message || "Failed to initiate GitHub login"
+      );
     }
   }
 

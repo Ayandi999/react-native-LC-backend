@@ -1,4 +1,13 @@
-import { pgTable, text, varchar, integer, boolean, timestamp, jsonb, index } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  varchar,
+  integer,
+  boolean,
+  timestamp,
+  jsonb,
+  index,
+} from "drizzle-orm/pg-core";
 import { user } from "./auth-schema.js";
 
 // Re-export Better Auth schema
@@ -19,8 +28,6 @@ export const problems = pgTable(
     difficultyLevel: integer("difficulty_level").notNull(), // 1, 2, 3
     paidOnly: boolean("paid_only").notNull().default(false),
     totalAcs: integer("total_acs").default(0),
-    totalSubmitted: integer("total_submitted").default(0),
-    acceptanceRate: varchar("acceptance_rate", { length: 20 }),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
       .defaultNow()
@@ -53,6 +60,17 @@ export const interviewSessions = pgTable(
     timeSpentSeconds: integer("time_spent_seconds").default(0),
     finalScore: integer("final_score"), // 0 - 100
     finalEvaluation: jsonb("final_evaluation"), // Structured breakdown: { summary, rubricScores, feedback }
+    messages: jsonb("messages")
+      .$type<
+        Array<{
+          id: string;
+          role: "user" | "assistant" | "system";
+          content: string;
+          createdAt: string;
+        }>
+      >()
+      .default([])
+      .notNull(),
     startedAt: timestamp("started_at").defaultNow().notNull(),
     endedAt: timestamp("ended_at"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -61,26 +79,6 @@ export const interviewSessions = pgTable(
     index("interview_sessions_user_idx").on(table.userId),
     index("interview_sessions_problem_idx").on(table.problemId),
     index("interview_sessions_status_idx").on(table.status),
-  ]
-);
-
-// 3. Interview Messages Table (persistent transcript of the conversation)
-export const interviewMessages = pgTable(
-  "interview_messages",
-  {
-    id: text("id")
-      .primaryKey()
-      .$defaultFn(() => crypto.randomUUID()),
-    sessionId: text("session_id")
-      .notNull()
-      .references(() => interviewSessions.id, { onDelete: "cascade" }),
-    role: varchar("role", { length: 50 }).notNull(), // 'user' | 'assistant' | 'system'
-    content: text("content").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-  },
-  (table) => [
-    index("interview_messages_session_idx").on(table.sessionId),
-    index("interview_messages_created_idx").on(table.createdAt),
   ]
 );
 
